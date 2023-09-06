@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <window xmlns="http://jmix.io/schema/ui/window"
-        caption="msg://taskEdit.caption"
+        caption="msg://employeeEdit.caption"
         focusComponent="form">
     <data>
-        <instance id="taskDc"
-                  class="com.company.jmixpm.entity.Task">
+        <instance id="employeeDc"
+                  class="com.company.jmixpm.entity.Employee">
             <fetchPlan extends="_base">
-                <property name="assignee" fetchPlan="_base"/>
+                <property name="employeeDetails" fetchPlan="_base"/>
             </fetchPlan>
             <loader/>
         </instance>
@@ -27,19 +27,22 @@
     <dialogMode height="600"
                 width="800"/>
     <layout spacing="true" expand="editActions">
-        <form id="form" dataContainer="taskDc">
+        <form id="form" dataContainer="employeeDc">
             <column width="350px">
                 <textField id="nameField" property="name"/>
-                <entityPicker id="assigneeField" property="assignee">
+                <textField id="phoneField" property="phone"/>
+                <textField id="salaryField" property="salary"/>
+
+                <textField id="passposrtNumberField" property="employeeDetails.passposrtNumber"/>
+                <dateField id="expiryDateField" property="employeeDetails.expiryDate"/>
+
+                <!--<entityPicker id="employeeDetailsField" property="employeeDetails">
                     <actions>
                         <action id="entityLookup" type="entity_lookup"/>
                         <action id="entityClear" type="entity_clear"/>
                     </actions>
-                </entityPicker>
-                <dateField id="startDateField" property="startDate"/>
-                <textField id="estimatedEffortsField" property="estimatedEfforts"/>
+                </entityPicker>-->
 
-                <comboBox id="labelField" property="label"/>
             </column>
         </form>
         <hbox id="editActions" spacing="true">

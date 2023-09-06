@@ -9,6 +9,8 @@
                 <property name="manager" fetchPlan="_base"/>
             </fetchPlan>
             <loader/>
+            <collection id="tasksDc" property="tasks"/>
+            <collection id="participantsDc" property="participants"/>
         </instance>
     </data>
     <facets>
@@ -26,7 +28,7 @@
     </actions>
     <dialogMode height="600"
                 width="800"/>
-    <layout spacing="true" expand="editActions">
+    <layout spacing="true" expand="tabSheet">
         <form id="form" dataContainer="projectDc">
             <column width="350px">
                 <textField id="nameField" property="name"/>
@@ -38,11 +40,66 @@
                         <action id="entityClear" type="entity_clear"/>
                     </actions>
                 </entityPicker>
+                <comboBox id="statusField" property="status"/>
+
+                <textArea id="projectLabelsField" property="projectLabels" editable="true"/>
             </column>
         </form>
+        <tabSheet id="tabSheet" width="100%">
+            <tab id="participantsTab"
+                 caption="msg://com.company.jmixpm.entity/Project.participants"
+                 margin="true,false,false,false"
+                 expand="participantsTable">
+                <table id="participantsTable" width="100%" dataContainer="participantsDc">
+                    <actions>
+                        <action id="add" type="add"/>
+                        <action id="exclude" type="exclude"/>
+                    </actions>
+                    <buttonsPanel alwaysVisible="true">
+                        <button id="participantsTableAddBtn" action="participantsTable.add"/>
+                        <button id="participantsTableExcludeBtn" action="participantsTable.exclude"/>
+                    </buttonsPanel>
+                    <columns>
+                        <column id="username"/>
+                        <column id="firstName"/>
+                        <column id="lastName"/>
+                        <column id="email"/>
+                        <column id="active"/>
+                        <column id="timeZoneId"/>
+                    </columns>
+                </table>
+            </tab>
+            <tab id="tasksTab"
+                 caption="msg://com.company.jmixpm.entity/Project.tasks"
+                 margin="true,false,false,false"
+                 expand="tasksTable">
+                <table id="tasksTable" width="100%" dataContainer="tasksDc">
+                    <actions>
+                        <action id="create" type="create"/>
+                        <action id="edit" type="edit"/>
+                        <action id="remove" type="remove"/>
+                    </actions>
+                    <buttonsPanel alwaysVisible="true">
+                        <button id="tasksTableCreateBtn" action="tasksTable.create"/>
+                        <button id="tasksTableEditBtn" action="tasksTable.edit"/>
+                        <button id="tasksTableRemoveBtn" action="tasksTable.remove"/>
+                    </buttonsPanel>
+                    <columns>
+                        <column id="name"/>
+                        <column id="assignee"/>
+                        <column id="startDate"/>
+                        <column id="label"/>
+                        <column id="estimatedEfforts"/>
+                        <column id="project"/>
+                    </columns>
+                </table>
+            </tab>
+        </tabSheet>
         <hbox id="editActions" spacing="true">
             <button id="commitAndCloseBtn" action="windowCommitAndClose"/>
             <button id="closeBtn" action="windowClose"/>
+
+            <button id="commitWithBeanValidation" caption="Commit with Bean Validation"/>
         </hbox>
     </layout>
 </window>
