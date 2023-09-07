@@ -6,9 +6,8 @@ import com.company.jmixpm.validation.ValidProjectDate;
 import io.jmix.core.annotation.DeletedBy;
 import io.jmix.core.annotation.DeletedDate;
 import io.jmix.core.entity.annotation.JmixGeneratedValue;
-import io.jmix.core.metamodel.annotation.Composition;
-import io.jmix.core.metamodel.annotation.InstanceName;
-import io.jmix.core.metamodel.annotation.JmixEntity;
+import io.jmix.core.entity.annotation.SystemLevel;
+import io.jmix.core.metamodel.annotation.*;
 import io.jmix.core.validation.group.UiCrossFieldChecks;
 
 import javax.persistence.*;
@@ -63,6 +62,9 @@ public class Project {
     @Column(name = "PROJECT_LABELS")
     private ProjectLabels projectLabels;
 
+    @Column(name = "TOTAL_ESTIMATED_EFFORT")
+    private Integer totalEstimatedEffort;
+
     @DeletedBy
     @Column(name = "DELETED_BY")
     private String deletedBy;
@@ -71,6 +73,39 @@ public class Project {
     @Column(name = "DELETED_DATE")
     @Temporal(TemporalType.TIMESTAMP)
     private Date deletedDate;
+
+    @SystemLevel
+    @Column(name = "OWNER_ID")
+    private UUID ownerId;
+
+    @DependsOnProperties({"ownerId"})
+    @JmixProperty
+    @Transient
+    private Customer owner;
+
+    public Customer getOwner() {
+        return owner;
+    }
+
+    public void setOwner(Customer owner) {
+        this.owner = owner;
+    }
+
+    public UUID getOwnerId() {
+        return ownerId;
+    }
+
+    public void setOwnerId(UUID ownerId) {
+        this.ownerId = ownerId;
+    }
+
+    public Integer getTotalEstimatedEffort() {
+        return totalEstimatedEffort == null ? 0 : totalEstimatedEffort;
+    }
+
+    public void setTotalEstimatedEffort(Integer totalEstimatedEffort) {
+        this.totalEstimatedEffort = totalEstimatedEffort;
+    }
 
     public Date getDeletedDate() {
         return deletedDate;

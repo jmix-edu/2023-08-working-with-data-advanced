@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<window xmlns="http://jmix.io/schema/ui/window"
+        caption="msg://customerSearchScreen.caption">
+    <data>
+        <collection id="customersDc" class="com.company.jmixpm.entity.Customer">
+            <fetchPlan extends="_base"/>
+            <loader id="customersDl">
+                <query>
+                    <![CDATA[select e from Customer e]]>
+                    <!--<condition>
+                        <and>
+                            <c:jpql>
+                                <c:where>e.firstName like :component_customerFilter</c:where>
+                            </c:jpql>
+                        </and>
+                    </condition>-->
+                </query>
+            </loader>
+        </collection>
+        <collection id="ordersDc" class="com.company.jmixpm.entity.Order">
+            <fetchPlan extends="_base">
+                <property name="customer" fetchPlan="_base"/>
+            </fetchPlan>
+            <loader id="ordersDl">
+                <query>
+                    <![CDATA[select e from Order_ e where e.customer = :container_customersDc]]>
+                </query>
+                <!--<query>
+                    <![CDATA[select e from Order_ e where e.customer = :component_customerField]]>
+                </query>-->
+            </loader>
+        </collection>
+
+    </data>
+
+    <facets>
+        <dataLoadCoordinator auto="true">
+            <refresh loader="customersDl">
+                <onScreenEvent type="Init"/>
+            </refresh>
+            <!--<refresh loader="ordersDl">
+                <onContainerItemChanged container="customersDc"/>
+            </refresh>-->
+        </dataLoadCoordinator>
+    </facets>
+
+    <layout expand="ordersTable" spacing="true">
+        <entityComboBox id="customerField" optionsContainer="customersDc"/>
+
+        <table id="ordersTable"
+               width="100%"
+               dataContainer="ordersDc">
+            <columns>
+                <column id="orderNumber"/>
+                <column id="date"/>
+                <column id="customer"/>
+            </columns>
+        </table>
+
+        <!--<hbox id="tablesBox" spacing="true" width="100%">
+            <vbox spacing="true" height="100%" width="100%" expand="customersTable">
+                <textField id="customerFilter"/>
+                <table id="customersTable"
+                       width="100%"
+                       dataContainer="customersDc">
+                    <columns>
+                        <column id="firstName"/>
+                        <column id="lastsName"/>
+                        <column id="email"/>
+                    </columns>
+                </table>
+            </vbox>
+            <table id="ordersTable"
+                   height="100%" width="100%"
+                   dataContainer="ordersDc">
+                <columns>
+                    <column id="orderNumber"/>
+                    <column id="date"/>
+                    <column id="customer"/>
+                </columns>
+            </table>
+        </hbox>-->
+    </layout>
+</window>

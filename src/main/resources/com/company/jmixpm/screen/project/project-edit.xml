@@ -7,6 +7,7 @@
                   class="com.company.jmixpm.entity.Project">
             <fetchPlan extends="_base">
                 <property name="manager" fetchPlan="_base"/>
+                <property name="owner" fetchPlan="_base"/>
             </fetchPlan>
             <loader/>
             <collection id="tasksDc" property="tasks"/>
@@ -41,8 +42,14 @@
                     </actions>
                 </entityPicker>
                 <comboBox id="statusField" property="status"/>
+                <field id="projectLabelsField" property="projectLabels" editable="false"/>
 
-                <textArea id="projectLabelsField" property="projectLabels" editable="true"/>
+                <entityPicker id="ownerField" property="owner">
+                    <actions>
+                        <action id="entityLookup" type="entity_lookup"/>
+                        <action id="entityClear" type="entity_clear"/>
+                    </actions>
+                </entityPicker>
             </column>
         </form>
         <tabSheet id="tabSheet" width="100%">
@@ -98,8 +105,8 @@
         <hbox id="editActions" spacing="true">
             <button id="commitAndCloseBtn" action="windowCommitAndClose"/>
             <button id="closeBtn" action="windowClose"/>
-
             <button id="commitWithBeanValidation" caption="Commit with Bean Validation"/>
+            <button id="performBeanValidationBtn" caption="Perform Bean Validation"/>
         </hbox>
     </layout>
 </window>

@@ -2,17 +2,25 @@ package com.company.jmixpm.screen.project;
 
 import com.company.jmixpm.app.ProjectService;
 import com.company.jmixpm.datatype.ProjectLabels;
+import com.company.jmixpm.entity.Project;
+import com.company.jmixpm.screen.user.UserBrowse;
+import io.jmix.core.validation.group.UiComponentChecks;
+import io.jmix.core.validation.group.UiCrossFieldChecks;
 import io.jmix.ui.Notifications;
 import io.jmix.ui.component.Button;
+import io.jmix.ui.component.Field;
 import io.jmix.ui.component.TextArea;
 import io.jmix.ui.component.Window;
 import io.jmix.ui.screen.*;
-import com.company.jmixpm.entity.Project;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
+import javax.validation.Validator;
+import javax.validation.groups.Default;
+import java.util.Collection;
 import java.util.List;
+import java.util.Set;
 
 @UiController("Project.edit")
 @UiDescriptor("project-edit.xml")
@@ -20,7 +28,7 @@ import java.util.List;
 public class ProjectEdit extends StandardEditor<Project> {
 
     @Autowired
-    private TextArea<ProjectLabels> projectLabelsField;
+    private Field<ProjectLabels> projectLabelsField;
 
     @Autowired
     private ProjectService projectService;
@@ -41,6 +49,11 @@ public class ProjectEdit extends StandardEditor<Project> {
         );
     }
 
+    @Install(to = "participantsTable.add", subject = "screenConfigurer")
+    private void participantsTableAddScreenConfigurer(final Screen screen) {
+        ((UserBrowse) screen).setFilterProject(getEditedEntity());
+    }
+
     @Subscribe("commitWithBeanValidation")
     public void onCommitWithBeanValidationClick(final Button.ClickEvent event) {
         try {
@@ -57,5 +70,24 @@ public class ProjectEdit extends StandardEditor<Project> {
                     .withCaption(sb.toString())
                     .show();
         }
+    }
+
+    @Autowired
+    private Validator validator;
+
+    @Subscribe("performBeanValidationBtn")
+    public void onPerformBeanValidationBtnClick(final Button.ClickEvent event) {
+        Project editedEntity = getEditedEntity();
+        Set<ConstraintViolation<Project>> violations =
+                validator.validate(editedEntity, Default.class, UiComponentChecks.class, UiCrossFieldChecks.class);
+
+        StringBuilder sb = new StringBuilder();
+        for (ConstraintViolation<?> constraintViolation : violations) {
+            sb.append(constraintViolation.getMessage()).append("\n");
+        }
+
+        notifications.create()
+                .withCaption(sb.toString())
+                .show();
     }
 }

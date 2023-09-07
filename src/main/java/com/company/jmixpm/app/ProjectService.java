@@ -7,10 +7,11 @@ import io.jmix.core.validation.group.UiCrossFieldChecks;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.annotation.Validated;
 
+import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import javax.validation.groups.Default;
 
-@Validated
+@Validated(value = {Default.class, UiComponentChecks.class, UiCrossFieldChecks.class})
 @Component
 public class ProjectService {
 
@@ -20,7 +21,7 @@ public class ProjectService {
         this.dataManager = dataManager;
     }
 
-    @Validated(value = {Default.class, UiComponentChecks.class, UiCrossFieldChecks.class})
+    @Valid
     public Project saveProject(@NotNull Project project) {
         return dataManager.save(project);
     }

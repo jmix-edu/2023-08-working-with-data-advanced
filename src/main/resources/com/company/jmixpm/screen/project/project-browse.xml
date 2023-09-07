@@ -8,6 +8,7 @@
                     class="com.company.jmixpm.entity.Project">
             <fetchPlan extends="_base">
                 <property name="manager" fetchPlan="_base"/>
+                <property name="owner" fetchPlan="_base"/>
             </fetchPlan>
             <loader id="projectsDl">
                 <query>
@@ -52,6 +53,8 @@
                 <column id="manager"/>
                 <column id="status"/>
                 <column id="projectLabels"/>
+                <column id="totalEstimatedEffort"/>
+                <column id="owner"/>
             </columns>
             <simplePagination/>
             <buttonsPanel id="buttonsPanel"
@@ -59,6 +62,7 @@
                 <button id="createBtn" action="projectsTable.create"/>
                 <button id="editBtn" action="projectsTable.edit"/>
                 <button id="removeBtn" action="projectsTable.remove"/>
+                <button id="createProjectBtn" caption="sudo Create" icon="CREATE_ACTION"/>
             </buttonsPanel>
         </groupTable>
         <hbox id="lookupActions" spacing="true" visible="false">

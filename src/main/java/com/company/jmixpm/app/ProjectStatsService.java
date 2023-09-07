@@ -30,13 +30,13 @@ public class ProjectStatsService {
                     List<Task> tasks = project.getTasks();
                     stats.setTaskCount(tasks.size());
 
-                    Integer estimatedEfforts = tasks.stream()
+                    /*Integer estimatedEfforts = tasks.stream()
                             .map(task ->
                                     task.getEstimatedEfforts() == null
                                             ? 0
                                             : task.getEstimatedEfforts())
-                            .reduce(0, Integer::sum);
-                    stats.setPlannedEfforts(estimatedEfforts);
+                            .reduce(0, Integer::sum);*/
+                    stats.setPlannedEfforts(project.getTotalEstimatedEffort());
 
                     stats.setActualEfforts(getActualEfforts(project.getId()));
 
@@ -46,7 +46,7 @@ public class ProjectStatsService {
 
     private Integer getActualEfforts(UUID projectId) {
         return dataManager.loadValue("select sum(te.timeSpent) from TimeEntry te " +
-                "where te.task.project.id = :projectId", Integer.class)
+                        "where te.task.project.id = :projectId", Integer.class)
                 .parameter("projectId", projectId)
                 .one();
     }
