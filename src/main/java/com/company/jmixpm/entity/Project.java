@@ -8,6 +8,7 @@ import io.jmix.core.annotation.DeletedDate;
 import io.jmix.core.entity.annotation.JmixGeneratedValue;
 import io.jmix.core.entity.annotation.SystemLevel;
 import io.jmix.core.metamodel.annotation.*;
+import io.jmix.core.pessimisticlocking.PessimisticLock;
 import io.jmix.core.validation.group.UiCrossFieldChecks;
 
 import javax.persistence.*;
@@ -17,6 +18,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
+@PessimisticLock(timeoutSec = 10)
 @ValidProjectDate(groups = UiCrossFieldChecks.class)
 @JmixEntity
 @Table(name = "PROJECT", indexes = {

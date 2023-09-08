@@ -14,6 +14,10 @@
                 <query>
                     <![CDATA[select e from Project e]]>
                 </query>
+                <!--<query>
+                    <![CDATA[select e from Project e
+                    where function('actual_efforts', e.id) > e.totalEstimatedEffort]]>
+                </query>-->
             </loader>
         </collection>
     </data>

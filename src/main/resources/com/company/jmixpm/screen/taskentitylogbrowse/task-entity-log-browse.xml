@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<window xmlns="http://jmix.io/schema/ui/window"
+        caption="msg://taskEntityLogBrowse.caption">
+    <data>
+        <collection id="entityLogItemsDc" class="io.jmix.audit.entity.EntityLogItem">
+            <fetchPlan extends="_base">
+                <property name="attributes" fetchPlan="_base"/>
+            </fetchPlan>
+            <loader id="entityLogItemsDl">
+                <query>
+                    <![CDATA[select e from audit_EntityLog e
+                            where e.entityRef.entityId = :id order by e.eventTs]]>
+                </query>
+            </loader>
+            <collection id="entityLogAttributesDc" property="attributes"/>
+        </collection>
+
+        <collection id="tasksDc" class="com.company.jmixpm.entity.Task">
+            <fetchPlan extends="_base"/>
+            <loader id="tasksDl">
+                <query>
+                    <![CDATA[select e from Task_ e]]>
+                </query>
+            </loader>
+        </collection>
+    </data>
+    <facets>
+        <dataLoadCoordinator>
+            <refresh loader="tasksDl">
+                <onScreenEvent type="BeforeShow"/>
+            </refresh>
+            <refresh loader="entityLogItemsDl">
+                <onComponentValueChanged component="taskField" param="id"/>
+            </refresh>
+        </dataLoadCoordinator>
+    </facets>
+    <layout expand="entityLogBox" spacing="true">
+        <entityComboBox id="taskField"/>
+
+        <hbox id="entityLogBox" width="100%" spacing="true">
+            <table id="entityLogItemsTable"
+                   height="100%" width="100%"
+                   dataContainer="entityLogItemsDc">
+                <columns>
+                    <column id="eventTs"/>
+                    <column id="username"/>
+                    <column id="type"/>
+                    <column id="entity"/>
+                    <column id="entityInstanceName"/>
+                    <column id="changes"/>
+                    <column id="sysTenantId"/>
+                    <column id="attributes"/>
+                </columns>
+            </table>
+            <table id="entityLogAttrsTable"
+                   height="100%" width="100%"
+                   dataContainer="entityLogAttributesDc">
+                <columns>
+                    <column id="name"/>
+                    <column id="value"/>
+                    <column id="oldValue"/>
+                    <column id="valueId"/>
+                    <column id="oldValueId"/>
+                </columns>
+            </table>
+        </hbox>
+    </layout>
+</window>

@@ -4,6 +4,7 @@ import com.company.jmixpm.app.ProjectService;
 import com.company.jmixpm.datatype.ProjectLabels;
 import com.company.jmixpm.entity.Project;
 import com.company.jmixpm.screen.user.UserBrowse;
+import io.jmix.audit.snapshot.EntitySnapshotManager;
 import io.jmix.core.validation.group.UiComponentChecks;
 import io.jmix.core.validation.group.UiCrossFieldChecks;
 import io.jmix.ui.Notifications;
@@ -31,13 +32,33 @@ public class ProjectEdit extends StandardEditor<Project> {
     private Field<ProjectLabels> projectLabelsField;
 
     @Autowired
+    private Button performBeanValidationBtn;
+    @Autowired
+    private Button commitWithBeanValidation;
+
+    @Autowired
     private ProjectService projectService;
     @Autowired
     private Notifications notifications;
+    @Autowired
+    private EntitySnapshotManager entitySnapshotManager;
 
     @Subscribe
     public void onInit(final InitEvent event) {
 //        setCrossFieldValidate(false);
+    }
+
+    @Subscribe
+    public void onAfterCommitChanges(final AfterCommitChangesEvent event) {
+        entitySnapshotManager.createSnapshot(getEditedEntity(), getEditedEntityContainer().getFetchPlan());
+    }
+
+    @Override
+    public void setReadOnly(boolean readOnly) {
+        super.setReadOnly(readOnly);
+
+        performBeanValidationBtn.setEnabled(!readOnly);
+        commitWithBeanValidation.setEnabled(!readOnly);
     }
 
     @Subscribe

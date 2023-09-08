@@ -6,7 +6,7 @@
         <collection id="usersDc"
                     class="com.company.jmixpm.entity.User">
             <fetchPlan extends="_base"/>
-            <loader id="usersDl">
+            <loader id="usersDl" cacheable="true">
                 <query>
                     <![CDATA[select e from User e order by e.username]]>
                 </query>
@@ -47,6 +47,7 @@
                 <action id="changePassword" type="changePassword"/>
                 <action id="resetPassword" type="resetPassword"/>
                 <action id="resetRememberMeToken" type="resetRememberMeToken"/>
+                <action id="showUserProjects" caption="msg://showUserProjects.caption" type="itemTracking"/>
             </actions>
             <columns>
                 <column id="username"/>
@@ -71,6 +72,7 @@
                         <action id="usersTable.showUserSubstitutions"/>
                     </actions>
                 </popupButton>
+                <button id="showUserProjectsBtn" action="usersTable.showUserProjects"/>
             </buttonsPanel>
         </groupTable>
         <hbox id="lookupActions" spacing="true" visible="false">

@@ -8,6 +8,7 @@
             <fetchPlan extends="_base">
                 <property name="manager" fetchPlan="_base"/>
                 <property name="owner" fetchPlan="_base"/>
+                <property name="participants" fetchPlan="_base"/>
             </fetchPlan>
             <loader/>
             <collection id="tasksDc" property="tasks"/>

@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <window xmlns="http://jmix.io/schema/ui/window"
         xmlns:c="http://jmix.io/schema/ui/jpql-condition"
+        xmlns:dynattr="http://jmix.io/schema/dynattr/ui"
         caption="msg://taskBrowse.caption"
         focusComponent="tasksTable">
     <data readOnly="true">
@@ -20,6 +21,7 @@
     <facets>
         <dataLoadCoordinator auto="true"/>
         <screenSettings id="settingsFacet" auto="true"/>
+        <dynattr:dynamicAttributes/>
     </facets>
     <actions>
         <action id="lookupSelectAction"
